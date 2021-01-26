@@ -18,5 +18,6 @@ export default {
   left: 0px;
   right: 0px;
   bottom: 0px;
+  box-shadow: 0px -1px 1px #c2c2c280;
 }
 </style>

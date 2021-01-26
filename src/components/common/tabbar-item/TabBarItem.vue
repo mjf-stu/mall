@@ -16,18 +16,22 @@ export default {
     path: {
       type: String,
     },
+    textColor: {
+      type: String,
+      default: "#88cbed",
+    },
   },
   computed: {
     is_Active: function () {
       return this.$route.path === this.path ? true : false;
     },
-    is_Active_style:function(){
-        return this.is_Active ? {color:'#88cbed'}:{}
-    }
+    is_Active_style: function () {
+      return this.is_Active ? { color: this.textColor } : {};
+    },
   },
   methods: {
     selectItem() {
-      this.$router.push(this.path);
+      this.$router.push(this.path).catch((error) => {});
     },
   },
 };
@@ -37,7 +41,7 @@ export default {
 .tabbar-item {
   flex: 1 1 auto;
   text-align: center;
-  line-height: 25px;
+  line-height: 27px;
 }
 .tabbar-item img {
   width: 25px;
