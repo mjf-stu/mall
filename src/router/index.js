@@ -4,6 +4,10 @@ const home = ()=> import('@/views/home/home.vue')
 const category = ()=> import('@/views/category/category.vue') 
 const shopcar = ()=> import('@/views/shopcar/shopcar.vue') 
 const my = ()=> import('@/views/my/my.vue') 
+const home_popular= ()=> import('@/views/home/childComps/childPopular.vue')
+const home_new= ()=> import('@/views/home/childComps/childNew.vue')
+const home_tuiJian= ()=> import('@/views/home/childComps/childTuiJian.vue')
+
 Vue.use(Router)
 
 const router=new Router({
@@ -11,12 +15,34 @@ const router=new Router({
     routes:[
         {
             path: '/',
-            redirect: '/home'
+            redirect: '/home',
         },
         {
             name: 'home',
             path: '/home',
-            component: home
+            component: home,
+            children:[
+                {
+                    // name: 'default',
+                    path: '',
+                    redirect: 'popular'
+                },
+                {
+                    name:'home_popular',
+                    path: 'popular',
+                    component: home_popular
+                },
+                {
+                    name:'home_new',
+                    path: 'new',
+                    component: home_new
+                },
+                {
+                    name:'home_tuiJian',
+                    path: 'tuijian',
+                    component: home_tuiJian
+                },
+            ]
         },
         {
             name: 'category',

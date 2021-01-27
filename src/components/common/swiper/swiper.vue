@@ -1,9 +1,11 @@
 <template>
+  <div class="swiper">
   <el-carousel :interval="4000" arrow="default">
     <el-carousel-item v-for="item of swiperData" :key="item.image">
       <img :src="item.image" />
     </el-carousel-item>
   </el-carousel>
+  </div>
 </template>
 
 
@@ -14,11 +16,14 @@ export default {
     swiperData: {
       type: Array,
     },
-  },
+  }
 };
 </script>
 
 <style>
+.swiper{
+  padding-top: 44px;
+}
 .el-carousel__container {
   height: 195px;
 }

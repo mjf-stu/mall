@@ -1,7 +1,11 @@
-import {homeData} from './request.js'
+import {homeData,homeData2} from './request.js'
 
 export function getMultidata(){
     return homeData({
-        url: '/home/multidata'
+        url: 'http://123.207.32.32:8000/home/multidata'
     })
+}
+
+export function getChildCompentData(){
+    return homeData('/')
 }
