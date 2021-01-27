@@ -7,5 +7,5 @@ export function getMultidata(){
 }
 
 export function getChildCompentData(){
-    return homeData('/')
+    return homeData2('/popular')
 }

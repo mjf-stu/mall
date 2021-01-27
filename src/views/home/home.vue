@@ -133,7 +133,7 @@ export default {
       this.recommends = res.data.recommend.list;
     });
     getChildCompentData().then(res=>{
-      console.log(res);
+      console.log(res+"---请求后台");
     })
   },
 };
