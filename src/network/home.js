@@ -6,12 +6,12 @@ export function getMultidata(){
     })
 }
 
-export function getPopular(){
+export function getGoods(page,type){
     return myhomeData({
         url:'/goods',
         params:{
-            page:1,
-            type:'popular'
+            page,
+            type
         }
     })
 }
