@@ -1,6 +1,6 @@
 <template>
     <tab-control>
-        <tab-control-item path="/home/popular" :pop="pop">
+        <tab-control-item path="/home/popular" :popular="popular">
             <template v-slot>
                 流行
             </template>
@@ -24,7 +24,7 @@ import TabControlItem from '../../../components/common/tabcontrol/TabControlItem
 export default {
   components: { TabControl, TabControlItem },
   props:{
-      pop:{
+      popular:{
           type:Object
       },
       news:{
@@ -32,8 +32,7 @@ export default {
       },
       tuijian:{
           type:Object
-      }
-
+      },
   }
 }
 </script>

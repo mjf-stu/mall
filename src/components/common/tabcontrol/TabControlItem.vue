@@ -13,7 +13,7 @@ export default {
     path: {
       type: String,
     },
-    pop: {
+    popular: {
       type: Object,
     },
     news: {
@@ -30,7 +30,16 @@ export default {
   },
   methods: {
     tiaozhuan() {
-      this.$router.push({path:this.path,query:this.pop}).catch((error) => {});
+      if(this.path==='/home/popular'){
+        
+        this.$router.push({path:this.path,query:this.popular}).catch((error) => {});
+      }
+      else if(this.path==='/home/new'){
+        this.$router.push({path:this.path,query:this.news}).catch((error) => {});
+      }
+      else{
+        this.$router.push({path:this.path,query:this.tuijian}).catch((error) => {});
+      }
     },
   },
 };
