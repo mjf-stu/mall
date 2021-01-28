@@ -22,11 +22,12 @@ const router=new Router({
             path: '/home',
             component: home,
             children:[
-                {
-                    // name: 'default',
-                    path: '',
-                    redirect: 'popular'
-                },
+                // {
+                //     //在home创建时created就手动重定向===这里重定向无法传参
+                //     // name: 'default',
+                //     // path: '',
+                //     // redirect: 'popular'
+                // },
                 {
                     name:'home_popular',
                     path: 'popular',

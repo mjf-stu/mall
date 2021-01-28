@@ -1,4 +1,4 @@
-import {homeData,homeData2} from './request.js'
+import {homeData,myhomeData} from './request.js'
 
 export function getMultidata(){
     return homeData({
@@ -6,6 +6,12 @@ export function getMultidata(){
     })
 }
 
-export function getChildCompentData(){
-    return homeData2('/popular')
+export function getPopular(){
+    return myhomeData({
+        url:'/goods',
+        params:{
+            page:1,
+            type:'popular'
+        }
+    })
 }
