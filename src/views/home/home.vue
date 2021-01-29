@@ -8,13 +8,15 @@
     <swiper :swiperData="banners" />
     <recommend-view :recommendData="recommends" />
     <popular-view :recommendData="recommends" />
-    <home-tab-control
+    <!-- <home-tab-control
       :popular="goods.popular"
       :news="goods.news"
       :tuijian="goods.tuijian"
-    />
+    /> -->
     <!-- <router-view></router-view> -->
-    <goods-container/>
+    <!-- <goods-container/> -->
+    <new-tab-control :itemNames='["流行","新款","精选"]' @changeItem='changeItem'/>
+    <new-goods-container :mallData="goods[type].goodslist"/>
   </div>
 </template>
 
@@ -25,6 +27,8 @@ import RecommendView from "./childComps/RecommendView.vue";
 import PopularView from "./childComps/PopularView.vue";
 import HomeTabControl from "./childComps/HomeTabControl.vue";
 import GoodsContainer from '../../components/common/goodsItem/goodsContainer.vue';
+import NewTabControl from '../../components/common/tabcontrol/newTabControl.vue';
+import NewGoodsContainer from '../../components/common/goodsItem/newGoodsContainer.vue';
 
 import { getMultidata, getGoods } from "@/network/home.js";
 
@@ -36,6 +40,8 @@ export default {
     PopularView,
     HomeTabControl,
     GoodsContainer,
+    NewTabControl,
+    NewGoodsContainer
   },
   name: "home",
   data: function () {
@@ -56,6 +62,7 @@ export default {
           goodslist: [],
         },
       },
+      type:'popular'
     };
   },
   created() {
@@ -69,6 +76,26 @@ export default {
       .catch((error) => {});
   },
   methods: {
+    /**
+     * 事件监听
+     */
+    changeItem(index){
+      switch(index){
+        case 0:
+          this.type='popular'
+          break
+        case 1:
+          this.type='news'
+          break
+        case 2:
+          this.type='tuijian'
+          break
+      }
+    },
+
+    /**
+     * 网络请求
+     */
     getMultidata: function () {
       getMultidata().then((res) => {
         this.banners = res.data.banner.list;
@@ -91,7 +118,7 @@ export default {
 
 <style>
 #home {
-  height: 8000px;
+  padding-bottom: 50px;
 }
 .bcolor {
   background-color: #88cbed;

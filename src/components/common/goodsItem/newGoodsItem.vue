@@ -1,14 +1,19 @@
 <template>
   <div class="goods-item">
-    <slot name="img"></slot>
-    <slot name="desc"></slot>
-    <slot name="price"></slot>
+    <img :src="data.image">
+    <div>{{data.desc}}</div>
+    <span>{{data.price}}</span>
   </div>
 </template>
 
 <script>
 export default {
-  name: "goodsItem",
+  name: "newGoodsItem",
+  props: {
+    data: {
+      type: Object,
+    },
+  },
 };
 </script>
 
