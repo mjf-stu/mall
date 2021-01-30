@@ -9,7 +9,9 @@
     class="scroll" 
     ref="scroll" 
     @changeScroll='changeScroll'
-    :probetype="3">
+    :probetype="3"
+    @pullingUpload='pullingUpload'
+    :isupload="true">
       <template>
         <swiper :swiperData="banners" />
         <recommend-view :recommendData="recommends" />
@@ -125,6 +127,10 @@ export default {
       }
     },
 
+    pullingUpload(bs){
+      console.log(1);
+      this.getGoods(this.type,bs)
+    },
     /**
      * 网络请求
      */
@@ -134,7 +140,7 @@ export default {
         this.recommends = res.data.recommend.list;
       });
     },
-    getGoods: function (type) {
+    getGoods: function (type,bs=null) {
       //获取1*4条数据且数据中的type为popular
       getGoods(this.goods[type].page + 1, type).then((res) => {
         // 获取信息后并重定向到子页面这样能保证传递数据
@@ -142,6 +148,9 @@ export default {
         this.goods[type].goodslist = res;
         //  this.$router.push({ path: "/home/popular", query: this.goods.popular })
         // .catch((error) => {});
+        if(bs!==null){
+          bs.finishPullUp()
+        }
       });
     },
   },
