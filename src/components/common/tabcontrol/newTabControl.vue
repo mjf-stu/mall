@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="TabControlContainer">
     <div class="item" 
     v-for="(item, index) in itemNames" 
     :key="index"
@@ -31,15 +31,16 @@ export default {
 };
 </script>
 
-<style>
-.container {
+<style scoped>
+.TabControlContainer {
   height: 50px;
   line-height: 50px;
   text-align: center;
   display: flex;
-  position: sticky;
-  top: 44px;
+  /* position: sticky; */
+  /* top: 44px; */
   background-color: #ffffff;
+  /* z-index: 100; */
 }
 .item {
   flex: 1 1 auto;

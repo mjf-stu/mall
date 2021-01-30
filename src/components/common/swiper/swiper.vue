@@ -22,7 +22,7 @@ export default {
 
 <style>
 .swiper{
-  padding-top: 44px;
+  /* padding-top: 44px; */
 }
 .el-carousel__container {
   height: 195px;

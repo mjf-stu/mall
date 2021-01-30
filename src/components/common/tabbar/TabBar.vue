@@ -20,5 +20,6 @@ export default {
   bottom: 0px;
   box-shadow: 0px -1px 1px #c2c2c280;
   background-color: #FFFFFF;
+  z-index: 1000;
 }
 </style>

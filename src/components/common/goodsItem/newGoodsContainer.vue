@@ -1,6 +1,6 @@
 <template>
     <div class="goodsContainer">
-        <new-goods-item v-for="item of mallData" :key="item.image" :data="item"/>
+        <new-goods-item v-for="item of mallData" :key="item.desc" :data="item"/>
     </div>
 </template>
 
