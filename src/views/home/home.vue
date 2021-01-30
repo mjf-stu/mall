@@ -5,7 +5,11 @@
         <span>首页</span>
       </template>
     </nav-bar>
-    <better-scroll class='scroll'>
+    <better-scroll 
+    class="scroll" 
+    ref="scroll" 
+    @changeScroll='changeScroll'
+    :probetype="3">
       <template>
         <swiper :swiperData="banners" />
         <recommend-view :recommendData="recommends" />
@@ -23,8 +27,10 @@
           @changeItem="changeItem"
         />
         <new-goods-container :mallData="goods[type].goodslist" />
+
       </template>
     </better-scroll>
+    <back-top @click.native="toBackTop" v-show="BackTop_isShow" />
   </div>
 </template>
 
@@ -38,6 +44,7 @@ import GoodsContainer from "../../components/common/goodsItem/goodsContainer.vue
 import NewTabControl from "../../components/common/tabcontrol/newTabControl.vue";
 import NewGoodsContainer from "../../components/common/goodsItem/newGoodsContainer.vue";
 import BetterScroll from "../../components/common/betterScroll/BetterScroll.vue";
+import BackTop from "@/components/common/backTop/BackTop.vue";
 
 import { getMultidata, getGoods } from "@/network/home.js";
 
@@ -52,6 +59,7 @@ export default {
     NewTabControl,
     NewGoodsContainer,
     BetterScroll,
+    BackTop,
   },
   name: "home",
   data: function () {
@@ -73,6 +81,7 @@ export default {
         },
       },
       type: "popular",
+      BackTop_isShow:false,
     };
   },
   created() {
@@ -100,6 +109,19 @@ export default {
         case 2:
           this.type = "tuijian";
           break;
+      }
+    },
+
+    toBackTop(){
+      this.$refs.scroll.scrollTo(0,0)
+    },
+
+    changeScroll(y){
+      if(y<=-505){
+        this.BackTop_isShow=true
+      }
+      else{
+        this.BackTop_isShow=false
       }
     },
 
@@ -134,9 +156,9 @@ export default {
 .bcolor {
   background-color: #88cbed;
 }
-.scroll{
-  position:absolute;
-  top:44px;
+.scroll {
+  position: absolute;
+  top: 44px;
   bottom: 50px;
   overflow: hidden;
   /* height: calc(100% - 94px);
