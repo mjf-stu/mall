@@ -15,6 +15,9 @@ export default {
   props: {
     itemNames: {
       type: Array,
+      default(){
+        return []
+      }
     },
   },
   data(){

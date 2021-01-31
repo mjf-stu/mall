@@ -5,13 +5,14 @@
         <span>首页</span>
       </template>
     </nav-bar>
-    <better-scroll 
-    class="scroll" 
-    ref="scroll" 
-    @changeScroll='changeScroll'
-    :probetype="3"
-    @pullingUpload='pullingUpload'
-    :isupload="true">
+    <better-scroll
+      class="scroll"
+      ref="scroll"
+      @changeScroll="changeScroll"
+      :probetype="3"
+      @pullingUpload="pullingUpload"
+      :isupload="true"
+    >
       <template>
         <swiper :swiperData="banners" />
         <recommend-view :recommendData="recommends" />
@@ -29,7 +30,6 @@
           @changeItem="changeItem"
         />
         <new-goods-container :mallData="goods[type].goodslist" />
-
       </template>
     </better-scroll>
     <back-top @click.native="toBackTop" v-show="BackTop_isShow" />
@@ -83,7 +83,7 @@ export default {
         },
       },
       type: "popular",
-      BackTop_isShow:false,
+      BackTop_isShow: false,
     };
   },
   created() {
@@ -93,10 +93,28 @@ export default {
     this.getGoods("tuijian");
   },
   mounted() {
-    // this.$router.push({ path: "/home/popular", query: this.goods.popular })
-    //   .catch((error) => {});
+    const refresh = this.debounce(this.$refs.scroll.scrollRefresh, 500);
+    this.$bus.$on("imgLoad", () => {
+      if (this.$refs.scroll !== null&&this.$refs.scroll.scrollRefresh!==undefined) {
+        refresh()
+        // this.$refs.scroll.scrollRefresh();
+      }
+    });
   },
   methods: {
+    /**
+     * 防抖动函数（优化）
+     */
+    debounce(fun, dely) {
+      let timer = null;
+      return function (...args) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          console.log(this);
+          fun.apply(null, args);
+        }, dely);
+      };
+    },
     /**
      * 事件监听
      */
@@ -114,22 +132,20 @@ export default {
       }
     },
 
-    toBackTop(){
-      this.$refs.scroll.scrollTo(0,0)
+    toBackTop() {
+      this.$refs.scroll.scrollTo(0, 0);
     },
 
-    changeScroll(y){
-      if(y<=-505){
-        this.BackTop_isShow=true
-      }
-      else{
-        this.BackTop_isShow=false
+    changeScroll(y) {
+      if (y <= -505) {
+        this.BackTop_isShow = true;
+      } else {
+        this.BackTop_isShow = false;
       }
     },
 
-    pullingUpload(bs){
-      console.log(1);
-      this.getGoods(this.type,bs)
+    pullingUpload(bs) {
+      this.getGoods(this.type, bs);
     },
     /**
      * 网络请求
@@ -140,16 +156,15 @@ export default {
         this.recommends = res.data.recommend.list;
       });
     },
-    getGoods: function (type,bs=null) {
+    getGoods: function (type, bs = null) {
       //获取1*4条数据且数据中的type为popular
       getGoods(this.goods[type].page + 1, type).then((res) => {
         // 获取信息后并重定向到子页面这样能保证传递数据
         this.goods[type].page += 1;
         this.goods[type].goodslist = res;
-        //  this.$router.push({ path: "/home/popular", query: this.goods.popular })
-        // .catch((error) => {});
-        if(bs!==null){
-          bs.finishPullUp()
+
+        if (bs !== null) {
+          bs.finishPullUp();
         }
       });
     },

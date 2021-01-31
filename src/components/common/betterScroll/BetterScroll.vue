@@ -10,7 +10,9 @@
 // import BS from 'better-scroll';
 import BS from "@better-scroll/core";
 import BS_pull from "@better-scroll/pull-up";
+// import BS_load from "@better-scroll/observe-dom"
 BS.use(BS_pull);
+// BS.use(BS_load);
 export default {
   name: "BetterScorll",
   data() {
@@ -31,29 +33,31 @@ export default {
   mounted() {
     // console.log(this.$refs,document.querySelector('.wrapper'));
     // let dom_backTop
-    setTimeout(() => {
-      this.bs = new BS(this.$refs.wrapper, {
-        click: true,
-        pullUpLoad: this.isupload,
-        probetype: this.probetype,
-      });
+    // setTimeout(() => {
+    this.bs = new BS(this.$refs.wrapper, {
+      click: true,
+      pullUpLoad: this.isupload,
+      probetype: this.probetype,
+      // observeDOM: true
+    });
 
-      this.bs.on("pullingUp", () => {
-        this.$emit("pullingUpload", this.bs);
-      });
-      this.bs.on("scroll", (position) => {
-        this.$emit("changeScroll", position.y)
-      })
-    }, 1000);
-  },
-  updated(){
-    if(this.bs!==null){
-      this.bs.refresh()
-    }
+    this.bs.on("pullingUp", () => {
+      this.$emit("pullingUpload", this.bs);
+    });
+    this.bs.on("scroll", (position) => {
+      this.$emit("changeScroll", position.y);
+    });
+    // }, 1000);
   },
   methods: {
     scrollTo(x, y, time = 300) {
       this.bs.scrollTo(x, y, time);
+    },
+    scrollRefresh() {
+      console.log(1);
+      if (this.bs !== null) {
+        this.bs.refresh();
+      }
     },
   },
 };
