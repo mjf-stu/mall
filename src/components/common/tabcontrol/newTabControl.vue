@@ -22,14 +22,17 @@ export default {
   },
   data(){
       return{
-          count:0
+          count:0,
       }
+  },
+  mounted(){
+    
   },
   methods:{
       selectItem(index){
           this.count=index
           this.$emit("changeItem",index)
-      }
+      },
   }
 };
 </script>

@@ -16,6 +16,14 @@ export default {
     swiperData: {
       type: Array,
     },
+  },
+  data(){
+    return{
+      isLoad:false
+    }
+  },
+  methods:{
+    
   }
 };
 </script>

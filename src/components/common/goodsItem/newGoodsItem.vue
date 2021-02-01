@@ -1,8 +1,8 @@
 <template>
   <div class="goods-item">
-    <img :src="data.image" @load="imgLoad">
-    <div>{{data.desc}}</div>
-    <span>{{data.price}}</span>
+    <img :src="data.image" @load="imgLoad" />
+    <div>{{ data.desc }}</div>
+    <span>{{ data.price }}</span>
   </div>
 </template>
 
@@ -14,15 +14,17 @@ export default {
       type: Object,
     },
   },
-  methods:{
-    imgLoad(){
-      if(this.timer.timer) clearTimeout(this.timer.timer)
-         this.timer.timer = setTimeout(() => {
-            // console.log(this.timer);
-          this.$bus.$emit("imgLoad")
-          }, 500);
-      }
-    }
+  methods: {
+    imgLoad() {
+      // debounce_child(this, this.$bus.$emit("imgLoad"), 500);
+
+      if (this.timer.timer) clearTimeout(this.timer.timer);
+      this.timer.timer = setTimeout(() => {
+        // console.log(this.timer);
+        this.$bus.$emit("imgLoad");
+      }, 500);
+    },
+  },
 };
 </script>
 

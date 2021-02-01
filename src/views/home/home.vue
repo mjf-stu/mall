@@ -5,6 +5,13 @@
         <span>首页</span>
       </template>
     </nav-bar>
+    <new-tab-control
+      :itemNames="['流行', '新款', '精选']"
+      @changeItem="changeItem"
+      ref="tabControl1"
+      :class="{tabfixed:isfixed}"
+      v-show="isfixed"
+    />
     <better-scroll
       class="scroll"
       ref="scroll"
@@ -28,6 +35,7 @@
         <new-tab-control
           :itemNames="['流行', '新款', '精选']"
           @changeItem="changeItem"
+          ref="tabControl"
         />
         <new-goods-container :mallData="goods[type].goodslist" />
       </template>
@@ -84,6 +92,7 @@ export default {
       },
       type: "popular",
       BackTop_isShow: false,
+      isfixed: false,
     };
   },
   created() {
@@ -93,28 +102,18 @@ export default {
     this.getGoods("tuijian");
   },
   mounted() {
-    const refresh = this.debounce(this.$refs.scroll.scrollRefresh, 500);
+    //图片加载完毕刷新滚动条高度
     this.$bus.$on("imgLoad", () => {
-      if (this.$refs.scroll !== null&&this.$refs.scroll.scrollRefresh!==undefined) {
-        refresh()
-        // this.$refs.scroll.scrollRefresh();
+      if (
+        this.$refs.scroll !== null &&
+        this.$refs.scroll.scrollRefresh !== undefined
+      ) {
+        this.$refs.scroll.scrollRefresh();
       }
+      console.log(this.$refs.tabControl.$el.offsetTop);
     });
   },
   methods: {
-    /**
-     * 防抖动函数（优化）
-     */
-    debounce(fun, dely) {
-      let timer = null;
-      return function (...args) {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-          console.log(this);
-          fun.apply(null, args);
-        }, dely);
-      };
-    },
     /**
      * 事件监听
      */
@@ -130,6 +129,8 @@ export default {
           this.type = "tuijian";
           break;
       }
+      this.$refs.tabControl.count=index
+      this.$refs.tabControl1.count=index
     },
 
     toBackTop() {
@@ -137,16 +138,19 @@ export default {
     },
 
     changeScroll(y) {
-      if (y <= -505) {
+      if (y <= -561) {
         this.BackTop_isShow = true;
+        this.isfixed = true;
       } else {
         this.BackTop_isShow = false;
+        this.isfixed = false;
       }
     },
 
     pullingUpload(bs) {
       this.getGoods(this.type, bs);
     },
+
     /**
      * 网络请求
      */
@@ -185,8 +189,15 @@ export default {
   top: 44px;
   bottom: 50px;
   overflow: hidden;
-  /* height: calc(100% - 94px);
-  overflow: hidden;
-  padding-top: 44px; */
+  /* height: calc(100% - 50px);
+  overflow: hidden; */
+  /* padding-top: 44px; */
+}
+.tabfixed{
+  position: fixed;
+  z-index: 1000;
+  left: 0px;
+  right: 0px;
+  top: 44px;
 }
 </style>

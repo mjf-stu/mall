@@ -18,11 +18,6 @@ export default {
     line-height: 44px;
     text-align: center;
     display: flex;
-    position: fixed;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    z-index: 1000;
 }
 .left,.right{
     width: 60px;
