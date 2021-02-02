@@ -110,7 +110,7 @@ export default {
       ) {
         this.$refs.scroll.scrollRefresh();
       }
-      console.log(this.$refs.tabControl.$el.offsetTop);
+      // console.log(this.$refs.tabControl.$el.offsetTop);
     });
   },
   methods: {

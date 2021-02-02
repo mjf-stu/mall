@@ -9,6 +9,11 @@
 <script>
 export default {
   name: "newGoodsItem",
+  data(){
+    return{
+      count:0
+    }
+  },
   props: {
     data: {
       type: Object,
@@ -26,7 +31,7 @@ export default {
     },
 
     toDetail(){
-      this.$router.push({name:"detail",params:{id:1}})
+        this.$router.push("/detail/"+1)
     }
   },
 };

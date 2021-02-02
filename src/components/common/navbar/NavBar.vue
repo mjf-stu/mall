@@ -23,7 +23,7 @@ export default {
     /* line-height: 55px; */
     width: 60px;
     /* border: black 1px solid; */
-    flex: 0 0 auto;
+    /* flex: 0 0 auto; */
     
 }
 .center{

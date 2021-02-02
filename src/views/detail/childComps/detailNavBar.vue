@@ -2,6 +2,7 @@
   <nav-bar>
     <template v-slot:comeback>
     <div class="imgContainer" @click="comeback">
+        
       <img src="@/assets/img/fanhui/fanhui.svg">
     </div>    
     </template>
@@ -20,12 +21,14 @@
 </template>
 
 <script>
+//公共组件
 import NavBar from "../../../components/common/navbar/NavBar.vue";
+
 export default {
   components: { NavBar },
   data(){
       return{
-        count:0
+        count:0,
       }
   },
   props:{
@@ -45,14 +48,13 @@ export default {
       selectShow(index){
           this.count = index
       }
-
   }
 };
 </script>
 
 <style scoped>
 .imgContainer{
-    height: 100%;
+    height: 44px;
 }
 img{
     height: 50%;

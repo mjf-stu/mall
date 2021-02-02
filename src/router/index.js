@@ -65,7 +65,7 @@ const router=new Router({
 
         {
             name:'detail',
-            path:'/detail/:id',
+            path:'/detail/:d_id',
             component: detail
         }
     ]

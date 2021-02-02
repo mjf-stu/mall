@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export  function homeData(config){
+export  function teacherData(config){
     const instance = axios.create({
         baseURL: 'http://123.207.32.32:8000',
         timeout: 5000
@@ -21,7 +21,7 @@ export  function homeData(config){
     return instance(config)
 }
 
-export  function myhomeData(config){
+export  function mallData(config){
     const instance = axios.create({
         baseURL: 'http://192.168.101.48:8080',
         timeout: 5000
