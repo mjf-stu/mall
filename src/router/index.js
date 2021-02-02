@@ -8,6 +8,8 @@ const home_popular= ()=> import('@/views/home/childComps/childPopular.vue')
 const home_new= ()=> import('@/views/home/childComps/childNew.vue')
 const home_tuiJian= ()=> import('@/views/home/childComps/childTuiJian.vue')
 
+const detail = ()=>import('@/views/detail/detail.vue')
+
 Vue.use(Router)
 
 const router=new Router({
@@ -60,6 +62,12 @@ const router=new Router({
             path: '/my',
             component: my
         },
+
+        {
+            name:'detail',
+            path:'/detail/:id',
+            component: detail
+        }
     ]
 })
 

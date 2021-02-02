@@ -20,9 +20,11 @@ export default {
     display: flex;
 }
 .left,.right{
+    /* line-height: 55px; */
     width: 60px;
-    border: black 1px solid;
+    /* border: black 1px solid; */
     flex: 0 0 auto;
+    
 }
 .center{
     flex: 1 1 auto;
