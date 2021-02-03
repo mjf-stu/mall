@@ -40,13 +40,16 @@ export default {
       probetype: this.probetype,
       // observeDOM: true
     });
-
-    this.bs.on("pullingUp", () => {
-      this.$emit("pullingUpload", this.bs);
-    });
-    this.bs.on("scroll", (position) => {
-      this.$emit("changeScroll", position.y);
-    });
+    if(this.isupload){
+      this.bs.on("pullingUp", () => {
+        this.$emit("pullingUpload", this.bs);
+      });
+    }
+    if(this.probetype){
+      this.bs.on("scroll", (position) => {
+        this.$emit("changeScroll", position.y);
+      });
+    }
     // }, 1000);
   },
   methods: {
