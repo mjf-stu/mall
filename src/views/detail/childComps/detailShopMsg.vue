@@ -1,6 +1,6 @@
 <template>
     <div v-if="shopInfo">
-    <detail-shop>
+    <detail-shop class="detail-shop">
         <template v-slot:logo>
             <img :src="shopInfo.shopMsg.shopLogo" class="logo">
         </template>
@@ -38,6 +38,9 @@ props:{
 </script>
 
 <style>
+.detail-shop{
+  border-bottom: 12px solid #eaeaea;
+}
 .logo{
     width: 100%;
 }

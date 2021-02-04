@@ -1,6 +1,6 @@
 <template>
   <div v-if="detailInfo">
-    <detail-Msg>
+    <detail-Msg class="detail-msg">
       <template v-slot:desc> {{ detailInfo.desc }} </template>
       <template v-slot:img>
           <img v-for="(item,index) of detailInfo.images" :key="index" :src="item" width="100%" @load="imgload">
@@ -34,4 +34,7 @@ export default {
 </script>
 
 <style scoped>
+.detail-msg{
+    border-bottom: 12px solid #eaeaea;
+}
 </style>

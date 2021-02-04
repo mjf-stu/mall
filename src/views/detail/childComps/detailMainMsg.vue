@@ -1,6 +1,6 @@
 <template>
   <div v-if="itemInfo">
-    <detail-main>
+    <detail-main class="detail-main">
       <template v-slot:desc>
         <div>{{ itemInfo.desc }}</div>
       </template>
@@ -51,6 +51,9 @@ export default {
 </script>
 
 <style scoped>
+.detail-main{
+   border-bottom: 12px solid #eaeaea;
+}
 .priceContainer {
   padding: 10px 0px;
 }

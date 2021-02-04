@@ -6,6 +6,8 @@
       <detail-main-msg :itemInfo="itemInfo" />
       <detail-shop-msg :shopInfo="shopInfo" />
       <detail-msg :detailInfo="detailInfo" @imgload="imgload"/>
+      <detail-rule-msg :ruleData="ruleData"/>
+      <detail-comment-msg :commentInfo="commentInfo"/>
     </better-scroll>
   </div>
 </template>
@@ -19,6 +21,9 @@ import DetailSwiper from "./childComps/detailSwiper.vue";
 import DetailMainMsg from "./childComps/detailMainMsg.vue";
 import DetailShopMsg from "./childComps/detailShopMsg.vue";
 import DetailMsg from './childComps/detail_Msg.vue';
+import detailRuleMsg from './childComps/detailRuleMsg.vue';
+import DetailCommentMsg from './childComps/detailCommentMsg.vue';
+
 import BetterScroll from "../../components/common/betterScroll/BetterScroll.vue";
 
 //网络请求
@@ -28,6 +33,7 @@ import {
   itemInfo,
   getShopData,
   getInfoData,
+  getCommentData,
 } from "@/network/details.js";
 
 export default {
@@ -38,7 +44,9 @@ export default {
     DetailMainMsg,
     DetailShopMsg,
     BetterScroll,
-    DetailMsg
+    DetailMsg,
+    detailRuleMsg,
+    DetailCommentMsg,
   },
   data() {
     return {
@@ -49,6 +57,7 @@ export default {
       itemInfo: null,
       shopInfo: null,
       detailInfo: null,
+      commentInfo: null
     };
   },
   //生命周期函数
@@ -57,7 +66,8 @@ export default {
     this.getMainData(this.d_id);
     this.getRuleData(this.d_id);
     this.getShopData(this.d_id);
-    this.getInfoData(this.d_id)
+    this.getInfoData(this.d_id);
+    this.getCommentData(this.d_id);
   },
   mounted() {},
   //自定义函数
@@ -65,8 +75,6 @@ export default {
     //网络请求
     getMainData(d_id) {
       getMainData(d_id).then((res) => {
-        console.log(new itemInfo(res));
-        console.log(res);
         this.mainData = res;
         this.topImages = res.topImages;
         this.itemInfo = new itemInfo(res);
@@ -75,18 +83,22 @@ export default {
     getRuleData(d_id) {
       getRuleData(d_id).then((res) => {
         this.ruleData = res;
+        console.log(res);
       });
     },
     getShopData(d_id) {
       getShopData(d_id).then((res) => {
         this.shopInfo = res;
-        console.log(this.shopInfo);
       });
     },
     getInfoData(d_id){
       getInfoData(d_id).then(res=>{
         this.detailInfo = res
-        console.log(res);
+      })
+    },
+    getCommentData(d_id){
+      getCommentData(d_id).then(res=>{
+        this.commentInfo = res
       })
     },
     //事件监听
