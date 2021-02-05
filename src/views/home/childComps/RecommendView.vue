@@ -18,7 +18,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .recommend{
     text-align: center;
     font-size: 12px;

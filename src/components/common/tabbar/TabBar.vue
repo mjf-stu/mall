@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .tabbar {
   height: 50px;
   display: flex;

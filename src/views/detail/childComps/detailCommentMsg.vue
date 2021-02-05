@@ -1,17 +1,19 @@
 <template>
-    <div v-if="commentInfo" class="container">
+    <div v-if="commentInfo" class="CommentContainer">
+        <div>
         <div class="tips">
             <span>买家评论 {{commentInfo.total}}</span><span>更多</span><img src="@/assets/img/fanhui/fanhui.svg">
         </div>
+        </div>
         <div class="comment" v-for="(item,index) of commentInfo.comment" :key="index">
             <div class="user">
-                <img :src="item.avatar"> <div>{{item.userName}}</div>
+                <img :src="item.avatar" > <div>{{item.userName}}</div>
             </div>
             <div class="content">
                 {{item.content}}
             </div>
             <div>
-                {{item.date}}
+                {{item.created | dataFormat("YYYY年MM月DD日")}}
             </div>
         </div>
         
@@ -19,18 +21,39 @@
 </template>
 
 <script>
+//第三方日期插件
+import moment from 'moment'
 export default {
 name:"detailCommentMsg",
 props:{
     commentInfo:{
         type:Object
     }
+},
+data(){
+    return{
+        count:0
+    }
+},
+filters:{
+    dataFormat(timestamp,style="YYYY-MM-DD"){
+        return moment.unix(timestamp).format(style)
+    }
+},
+methods:{
+    imgload(){
+        this.count++
+        console.log(this.count);
+        if(this.count===this.commentInfo.comment.length+1){
+            this.$emit("imgload")
+        }
+    }
 }
 }
 </script>
 
 <style scoped>
-.container{
+.CommentContainer{
     padding: 10px 10px  0px 10px;
     border-bottom: 10px solid #eaeaea;
 }
@@ -43,11 +66,11 @@ props:{
     flex: 1 1 auto;
 }
 .tips img{
-    height: 100%;
+    height: 100%; 
     transform: rotate(180deg);
 }
 .comment{
-    margin: 20px 0px;
+    padding: 20px 0px;
 }
 .user{
     height: 30px;

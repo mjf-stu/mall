@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .navbar{
     height: 44px;
     line-height: 44px;

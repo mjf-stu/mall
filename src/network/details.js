@@ -46,6 +46,17 @@ export function getCommentData(d_id) {
         }
     })
 }
+
+//获取商品的推荐信息
+export function getRecommendData(d_id) {
+    return mallData({
+        url:"/detailsRecommend",
+        params:{
+            d_id
+        }
+    })
+}
+
 //封装主要信息为一个对象
 export class itemInfo{
     constructor(res){

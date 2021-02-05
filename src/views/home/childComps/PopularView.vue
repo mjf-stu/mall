@@ -25,7 +25,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .popular{
     text-align: center;
     font-size: 12px;

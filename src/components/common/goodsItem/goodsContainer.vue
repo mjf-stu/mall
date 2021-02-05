@@ -26,7 +26,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .goodsContainer{
   display: flex;
   justify-content: space-evenly;

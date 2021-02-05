@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .goods-item {
   /* flex: 1 1 auto; */
   width: 48%;

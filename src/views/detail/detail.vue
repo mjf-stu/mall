@@ -1,19 +1,22 @@
 <template>
   <div class="detail">
-    <detail-nav-bar :NavBar_data="['商品', '参数', '评论', '推荐']" />
+    <detail-nav-bar :NavBar_data="['商品', '参数', '评论', '推荐']" @selectShow="selectShow"/>
     <better-scroll class="better-scroll" ref="scroll">
-      <detail-swiper :images="topImages" @imgload="imgload"/>
+      <detail-swiper :images="topImages" @imgload="imgload" ref="swiper"/>
       <detail-main-msg :itemInfo="itemInfo" />
       <detail-shop-msg :shopInfo="shopInfo" />
       <detail-msg :detailInfo="detailInfo" @imgload="imgload"/>
-      <detail-rule-msg :ruleData="ruleData"/>
-      <detail-comment-msg :commentInfo="commentInfo"/>
+      <detail-rule-msg :ruleData="ruleData" ref="rule"/>
+      <detail-comment-msg :commentInfo="commentInfo" ref="comment"/>
+      <detail-recommend-msg :recommendInfo="recommendInfo" ref="recommend"/>
     </better-scroll>
   </div>
 </template>
 
 <script>
+
 //公共组件
+import BetterScroll from "../../components/common/betterScroll/BetterScroll.vue";
 
 //子组件
 import DetailNavBar from "./childComps/detailNavBar.vue";
@@ -23,8 +26,8 @@ import DetailShopMsg from "./childComps/detailShopMsg.vue";
 import DetailMsg from './childComps/detail_Msg.vue';
 import detailRuleMsg from './childComps/detailRuleMsg.vue';
 import DetailCommentMsg from './childComps/detailCommentMsg.vue';
+import DetailRecommendMsg from './childComps/detailRecommendMsg.vue'
 
-import BetterScroll from "../../components/common/betterScroll/BetterScroll.vue";
 
 //网络请求
 import {
@@ -34,6 +37,7 @@ import {
   getShopData,
   getInfoData,
   getCommentData,
+  getRecommendData,
 } from "@/network/details.js";
 
 export default {
@@ -47,6 +51,7 @@ export default {
     DetailMsg,
     detailRuleMsg,
     DetailCommentMsg,
+    DetailRecommendMsg,
   },
   data() {
     return {
@@ -57,7 +62,12 @@ export default {
       itemInfo: null,
       shopInfo: null,
       detailInfo: null,
-      commentInfo: null
+      commentInfo: null,
+      recommendInfo: null,
+      shopY:0,
+      ruleY:0,
+      commentY:0,
+      recommendY:0,
     };
   },
   //生命周期函数
@@ -68,6 +78,7 @@ export default {
     this.getShopData(this.d_id);
     this.getInfoData(this.d_id);
     this.getCommentData(this.d_id);
+    this.getRecommendData(this.d_id);
   },
   mounted() {},
   //自定义函数
@@ -83,7 +94,6 @@ export default {
     getRuleData(d_id) {
       getRuleData(d_id).then((res) => {
         this.ruleData = res;
-        console.log(res);
       });
     },
     getShopData(d_id) {
@@ -101,10 +111,35 @@ export default {
         this.commentInfo = res
       })
     },
+    getRecommendData(d_id){
+      getRecommendData(d_id).then(res=>{
+        console.log(res);
+        this.recommendInfo = res
+      })
+    },
     //事件监听
     imgload(){
       this.$refs.scroll.scrollRefresh()
+      this.shopY=-(this.$refs.swiper.$el.offsetTop-44)
+      this.ruleY=-(this.$refs.rule.$el.offsetTop-44)
+      this.commentY=-(this.$refs.comment.$el.offsetTop-44)
+      this.recommendY=-(this.$refs.recommend.$el.offsetTop-44)
     },
+
+    selectShow(index){
+      if(index === 0){
+        this.$refs.scroll.scrollTo(0,this.shopY)
+      }
+      else if(index === 1){
+        this.$refs.scroll.scrollTo(0,this.ruleY)
+      }
+      else if(index === 2){
+        this.$refs.scroll.scrollTo(0,this.commentY)
+      }
+      else{
+        this.$refs.scroll.scrollTo(0,this.recommendY)
+      }
+    }
   },
 };
 </script>

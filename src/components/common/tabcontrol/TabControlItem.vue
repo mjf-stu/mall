@@ -45,7 +45,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .tab-control-item {
   flex: 1 1 auto;
 }

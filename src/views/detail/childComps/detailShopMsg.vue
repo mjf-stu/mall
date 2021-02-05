@@ -37,7 +37,7 @@ props:{
 }
 </script>
 
-<style>
+<style scoped>
 .detail-shop{
   border-bottom: 12px solid #eaeaea;
 }

@@ -47,6 +47,7 @@ export default {
 
       selectShow(index){
           this.count = index
+          this.$emit("selectShow",index)
       }
   }
 };

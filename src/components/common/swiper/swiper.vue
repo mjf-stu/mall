@@ -36,10 +36,7 @@ export default {
   height: 195px;
 }
 .el-carousel__item {
-  /* color: #475669; */
-  /* font-size: 18px; */
   opacity: 0.75;
-  /* line-height: 300px; */
   margin: 0;
 }
 .el-carousel__item img {
