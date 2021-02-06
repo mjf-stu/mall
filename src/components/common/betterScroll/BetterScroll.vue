@@ -40,12 +40,12 @@ export default {
       probetype: this.probetype,
       // observeDOM: true
     });
-    if(this.isupload){
+    if(this.isupload!==false){
       this.bs.on("pullingUp", () => {
         this.$emit("pullingUpload", this.bs);
       });
     }
-    if(this.probetype){
+    if(this.probetype!==0){
       this.bs.on("scroll", (position) => {
         this.$emit("changeScroll", position.y);
       });

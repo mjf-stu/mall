@@ -1,7 +1,17 @@
 <template>
   <div class="detail">
-    <detail-nav-bar :NavBar_data="['商品', '参数', '评论', '推荐']" @selectShow="selectShow"/>
-    <better-scroll class="better-scroll" ref="scroll">
+    <detail-nav-bar 
+    :NavBar_data="['商品', '参数', '评论', '推荐']" 
+    @selectShow="selectShow"
+    ref="navBar"/>
+    <better-scroll 
+    class="scroll" 
+    ref="scroll" 
+    :probetype="3"
+    @changeScroll="changeScroll"
+    :isupload="true"
+    >
+      <template>
       <detail-swiper :images="topImages" @imgload="imgload" ref="swiper"/>
       <detail-main-msg :itemInfo="itemInfo" />
       <detail-shop-msg :shopInfo="shopInfo" />
@@ -9,7 +19,9 @@
       <detail-rule-msg :ruleData="ruleData" ref="rule"/>
       <detail-comment-msg :commentInfo="commentInfo" ref="comment"/>
       <detail-recommend-msg :recommendInfo="recommendInfo" ref="recommend"/>
+      </template>
     </better-scroll>
+    <detail-tool-bar/>
   </div>
 </template>
 
@@ -27,6 +39,7 @@ import DetailMsg from './childComps/detail_Msg.vue';
 import detailRuleMsg from './childComps/detailRuleMsg.vue';
 import DetailCommentMsg from './childComps/detailCommentMsg.vue';
 import DetailRecommendMsg from './childComps/detailRecommendMsg.vue'
+import DetailToolBar from './childComps/detailToolBar.vue';
 
 
 //网络请求
@@ -52,6 +65,7 @@ export default {
     detailRuleMsg,
     DetailCommentMsg,
     DetailRecommendMsg,
+    DetailToolBar,
   },
   data() {
     return {
@@ -64,10 +78,14 @@ export default {
       detailInfo: null,
       commentInfo: null,
       recommendInfo: null,
+      itemScrollTop:[],
       shopY:0,
       ruleY:0,
       commentY:0,
       recommendY:0,
+      // toolBarInfo:[["/src/assets/img/detail_icon/dianpu.svg","~@/assets/img/detail_icon_pink/dianpu.svg","店铺"]
+      //             ,["~@/assets/img/detail_icon/qipao.svg","~@/assets/img/detail_icon_pink/qipao.svg","客服"]
+      //             ,["~@/assets/img/detail_icon/shoucang.svg","~@/assets/img/detail_icon_pink/shoucang.svg","收藏"]]
     };
   },
   //生命周期函数
@@ -80,7 +98,9 @@ export default {
     this.getCommentData(this.d_id);
     this.getRecommendData(this.d_id);
   },
-  mounted() {},
+  mounted() {
+  },
+  updated(){},
   //自定义函数
   methods: {
     //网络请求
@@ -113,7 +133,6 @@ export default {
     },
     getRecommendData(d_id){
       getRecommendData(d_id).then(res=>{
-        console.log(res);
         this.recommendInfo = res
       })
     },
@@ -124,21 +143,48 @@ export default {
       this.ruleY=-(this.$refs.rule.$el.offsetTop-44)
       this.commentY=-(this.$refs.comment.$el.offsetTop-44)
       this.recommendY=-(this.$refs.recommend.$el.offsetTop-44)
+      this.itemScrollTop.push(-(this.$refs.swiper.$el.offsetTop-44))
+      this.itemScrollTop.push(-(this.$refs.rule.$el.offsetTop-44))
+      this.itemScrollTop.push(-(this.$refs.comment.$el.offsetTop-44))
+      this.itemScrollTop.push(-(this.$refs.recommend.$el.offsetTop-44))
+      this.itemScrollTop.push(-(this.$refs.recommend.$el.offsetTop-44)*2)
     },
 
     selectShow(index){
-      if(index === 0){
-        this.$refs.scroll.scrollTo(0,this.shopY)
+        this.$refs.scroll.scrollTo(0,this.itemScrollTop[index])
+      // if(index === 0){
+      //   this.$refs.scroll.scrollTo(0,this.shopY)
+      // }
+      // else if(index === 1){
+      //   this.$refs.scroll.scrollTo(0,this.ruleY)
+      // }
+      // else if(index === 2){
+      //   this.$refs.scroll.scrollTo(0,this.commentY)
+      // }
+      // else{
+      //   this.$refs.scroll.scrollTo(0,this.recommendY)
+      // }
+    },
+
+    changeScroll(y){
+      y=y-44
+      for(let i=0;i< this.itemScrollTop.length-1;i++){
+        if(y<=this.itemScrollTop[i] && y>this.itemScrollTop[i+1] && i!==this.$refs.navBar.count){
+          console.log(i);
+          this.$refs.navBar.count=i
+        }
       }
-      else if(index === 1){
-        this.$refs.scroll.scrollTo(0,this.ruleY)
-      }
-      else if(index === 2){
-        this.$refs.scroll.scrollTo(0,this.commentY)
-      }
-      else{
-        this.$refs.scroll.scrollTo(0,this.recommendY)
-      }
+      // if(y<=this.shopY && y>this.ruleY){
+      //   this.$refs.navBar.count=0
+      // }
+      // else if(y<=this.ruleY && y>this.commentY){
+      //   this.$refs.navBar.count=1
+      // }
+      // else if(y<=this.commentY && y>this.recommendY){
+      //   this.$refs.navBar.count=2
+      // }else if(y<=this.recommendY){
+      //   this.$refs.navBar.count=3
+      // }
     }
   },
 };
@@ -150,8 +196,8 @@ export default {
   z-index: 1001;
   background-color: #fff;
 }
-.better-scroll{
-  height: calc(100vh - 44px);
+.scroll{
+  height: calc(100vh - 44px - 50px);
   overflow:hidden;
 }
 </style>
