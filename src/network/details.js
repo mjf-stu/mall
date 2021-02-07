@@ -60,6 +60,7 @@ export function getRecommendData(d_id) {
 //封装主要信息为一个对象
 export class itemInfo{
     constructor(res){
+        this.d_id = res.d_id
         this.desc = res.desc
         this.price = res.price
         this.oldprice = res.oldprice

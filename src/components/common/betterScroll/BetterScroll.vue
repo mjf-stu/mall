@@ -27,7 +27,7 @@ export default {
     },
     isupload: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   mounted() {
@@ -40,7 +40,7 @@ export default {
       probetype: this.probetype,
       // observeDOM: true
     });
-    if(this.isupload!==false){
+    if(this.isupload===true){
       this.bs.on("pullingUp", () => {
         this.$emit("pullingUpload", this.bs);
       });

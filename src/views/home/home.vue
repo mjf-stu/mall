@@ -54,11 +54,14 @@ import GoodsContainer from "../../components/common/goodsItem/goodsContainer.vue
 import NewTabControl from "../../components/common/tabcontrol/newTabControl.vue";
 import NewGoodsContainer from "../../components/common/goodsItem/newGoodsContainer.vue";
 import BetterScroll from "../../components/common/betterScroll/BetterScroll.vue";
-import BackTop from "@/components/common/backTop/BackTop.vue";
+// import BackTop from "@/components/common/backTop/BackTop.vue";
 
 import { getMultidata, getGoods } from "@/network/home.js";
 
+import {backTop} from "@/common/mixin/backTop.js"
+
 export default {
+  mixins:[backTop],
   components: {
     NavBar,
     Swiper,
@@ -69,7 +72,7 @@ export default {
     NewTabControl,
     NewGoodsContainer,
     BetterScroll,
-    BackTop,
+    // BackTop,
   },
   name: "home",
   data: function () {
@@ -91,7 +94,7 @@ export default {
         },
       },
       type: "popular",
-      BackTop_isShow: false,
+      // BackTop_isShow: false,
       isfixed: false,
     };
   },
@@ -133,9 +136,9 @@ export default {
       this.$refs.tabControl1.count=index
     },
 
-    toBackTop() {
-      this.$refs.scroll.scrollTo(0, 0);
-    },
+    // toBackTop() {
+    //   this.$refs.scroll.scrollTo(0, 0);
+    // },
 
     changeScroll(y) {
       if (y <= -561) {

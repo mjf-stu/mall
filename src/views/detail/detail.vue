@@ -1,32 +1,43 @@
 <template>
   <div class="detail">
-    <detail-nav-bar 
-    :NavBar_data="['商品', '参数', '评论', '推荐']" 
-    @selectShow="selectShow"
-    ref="navBar"/>
-    <better-scroll 
-    class="scroll" 
-    ref="scroll" 
-    :probetype="3"
-    @changeScroll="changeScroll"
-    :isupload="true"
+    <detail-nav-bar
+      :NavBar_data="['商品', '参数', '评论', '推荐']"
+      @selectShow="selectShow"
+      ref="navBar"
+    />
+    <better-scroll
+      class="scroll"
+      ref="scroll"
+      :probetype="3"
+      @changeScroll="changeScroll"
+      :isupload="true"
     >
       <template>
-      <detail-swiper :images="topImages" @imgload="imgload" ref="swiper"/>
-      <detail-main-msg :itemInfo="itemInfo" />
-      <detail-shop-msg :shopInfo="shopInfo" />
-      <detail-msg :detailInfo="detailInfo" @imgload="imgload"/>
-      <detail-rule-msg :ruleData="ruleData" ref="rule"/>
-      <detail-comment-msg :commentInfo="commentInfo" ref="comment"/>
-      <detail-recommend-msg :recommendInfo="recommendInfo" ref="recommend"/>
+        <detail-swiper :images="topImages" @imgload="imgload" ref="swiper" />
+        <detail-main-msg :itemInfo="itemInfo" />
+        <detail-shop-msg :shopInfo="shopInfo" />
+        <detail-msg :detailInfo="detailInfo" @imgload="imgload" />
+        <detail-rule-msg :ruleData="ruleData" ref="rule" />
+        <detail-comment-msg :commentInfo="commentInfo" ref="comment" />
+        <detail-recommend-msg :recommendInfo="recommendInfo" ref="recommend" />
       </template>
     </better-scroll>
-    <detail-tool-bar/>
+    <back-top @click.native="toBackTop" v-show="BackTop_isShow" />
+    <detail-tool-bar @showItem="showItem" />
+    <div class="addShopblur" v-if="addIsShow" @click="addShopBlur"></div>
+    <transition name="addShop">
+      <detail-add-shop
+        v-show="addIsShow"
+        :msgInfo="itemInfo"
+        :imgInfo="topImages"
+        ref="addShop"
+        @submitShop="submitShop"
+      />
+    </transition>
   </div>
 </template>
 
 <script>
-
 //公共组件
 import BetterScroll from "../../components/common/betterScroll/BetterScroll.vue";
 
@@ -35,12 +46,14 @@ import DetailNavBar from "./childComps/detailNavBar.vue";
 import DetailSwiper from "./childComps/detailSwiper.vue";
 import DetailMainMsg from "./childComps/detailMainMsg.vue";
 import DetailShopMsg from "./childComps/detailShopMsg.vue";
-import DetailMsg from './childComps/detail_Msg.vue';
-import detailRuleMsg from './childComps/detailRuleMsg.vue';
-import DetailCommentMsg from './childComps/detailCommentMsg.vue';
-import DetailRecommendMsg from './childComps/detailRecommendMsg.vue'
-import DetailToolBar from './childComps/detailToolBar.vue';
+import DetailMsg from "./childComps/detail_Msg.vue";
+import detailRuleMsg from "./childComps/detailRuleMsg.vue";
+import DetailCommentMsg from "./childComps/detailCommentMsg.vue";
+import DetailRecommendMsg from "./childComps/detailRecommendMsg.vue";
+import DetailToolBar from "./childComps/detailToolBar.vue";
 
+//混入对象
+import { backTop } from "@/common/mixin/backTop.js";
 
 //网络请求
 import {
@@ -52,9 +65,11 @@ import {
   getCommentData,
   getRecommendData,
 } from "@/network/details.js";
+import DetailAddShop from "./childComps/detailAddShop.vue";
 
 export default {
   name: "Detail",
+  mixins: [backTop],
   components: {
     DetailNavBar,
     DetailSwiper,
@@ -66,6 +81,7 @@ export default {
     DetailCommentMsg,
     DetailRecommendMsg,
     DetailToolBar,
+    DetailAddShop,
   },
   data() {
     return {
@@ -78,11 +94,13 @@ export default {
       detailInfo: null,
       commentInfo: null,
       recommendInfo: null,
-      itemScrollTop:[],
-      shopY:0,
-      ruleY:0,
-      commentY:0,
-      recommendY:0,
+      itemScrollTop: [],
+      shopY: 0,
+      ruleY: 0,
+      commentY: 0,
+      recommendY: 0,
+      add_or_buy:0,
+      addIsShow: false,
       // toolBarInfo:[["/src/assets/img/detail_icon/dianpu.svg","~@/assets/img/detail_icon_pink/dianpu.svg","店铺"]
       //             ,["~@/assets/img/detail_icon/qipao.svg","~@/assets/img/detail_icon_pink/qipao.svg","客服"]
       //             ,["~@/assets/img/detail_icon/shoucang.svg","~@/assets/img/detail_icon_pink/shoucang.svg","收藏"]]
@@ -98,9 +116,8 @@ export default {
     this.getCommentData(this.d_id);
     this.getRecommendData(this.d_id);
   },
-  mounted() {
-  },
-  updated(){},
+  mounted() {},
+  updated() {},
   //自定义函数
   methods: {
     //网络请求
@@ -121,37 +138,37 @@ export default {
         this.shopInfo = res;
       });
     },
-    getInfoData(d_id){
-      getInfoData(d_id).then(res=>{
-        this.detailInfo = res
-      })
+    getInfoData(d_id) {
+      getInfoData(d_id).then((res) => {
+        this.detailInfo = res;
+      });
     },
-    getCommentData(d_id){
-      getCommentData(d_id).then(res=>{
-        this.commentInfo = res
-      })
+    getCommentData(d_id) {
+      getCommentData(d_id).then((res) => {
+        this.commentInfo = res;
+      });
     },
-    getRecommendData(d_id){
-      getRecommendData(d_id).then(res=>{
-        this.recommendInfo = res
-      })
+    getRecommendData(d_id) {
+      getRecommendData(d_id).then((res) => {
+        this.recommendInfo = res;
+      });
     },
     //事件监听
-    imgload(){
-      this.$refs.scroll.scrollRefresh()
-      this.shopY=-(this.$refs.swiper.$el.offsetTop-44)
-      this.ruleY=-(this.$refs.rule.$el.offsetTop-44)
-      this.commentY=-(this.$refs.comment.$el.offsetTop-44)
-      this.recommendY=-(this.$refs.recommend.$el.offsetTop-44)
-      this.itemScrollTop.push(-(this.$refs.swiper.$el.offsetTop-44))
-      this.itemScrollTop.push(-(this.$refs.rule.$el.offsetTop-44))
-      this.itemScrollTop.push(-(this.$refs.comment.$el.offsetTop-44))
-      this.itemScrollTop.push(-(this.$refs.recommend.$el.offsetTop-44))
-      this.itemScrollTop.push(-(this.$refs.recommend.$el.offsetTop-44)*2)
+    imgload() {
+      this.$refs.scroll.scrollRefresh();
+      this.shopY = -(this.$refs.swiper.$el.offsetTop - 44);
+      this.ruleY = -(this.$refs.rule.$el.offsetTop - 44);
+      this.commentY = -(this.$refs.comment.$el.offsetTop - 44);
+      this.recommendY = -(this.$refs.recommend.$el.offsetTop - 44);
+      this.itemScrollTop.push(-(this.$refs.swiper.$el.offsetTop - 44));
+      this.itemScrollTop.push(-(this.$refs.rule.$el.offsetTop - 44));
+      this.itemScrollTop.push(-(this.$refs.comment.$el.offsetTop - 44));
+      this.itemScrollTop.push(-(this.$refs.recommend.$el.offsetTop - 44));
+      this.itemScrollTop.push(-(this.$refs.recommend.$el.offsetTop - 44) * 2);
     },
 
-    selectShow(index){
-        this.$refs.scroll.scrollTo(0,this.itemScrollTop[index])
+    selectShow(index) {
+      this.$refs.scroll.scrollTo(0, this.itemScrollTop[index]);
       // if(index === 0){
       //   this.$refs.scroll.scrollTo(0,this.shopY)
       // }
@@ -166,12 +183,21 @@ export default {
       // }
     },
 
-    changeScroll(y){
-      y=y-44
-      for(let i=0;i< this.itemScrollTop.length-1;i++){
-        if(y<=this.itemScrollTop[i] && y>this.itemScrollTop[i+1] && i!==this.$refs.navBar.count){
+    changeScroll(y) {
+      if (y <= -561) {
+        this.BackTop_isShow = true;
+      } else {
+        this.BackTop_isShow = false;
+      }
+      y = y - 44;      
+      for (let i = 0; i < this.itemScrollTop.length - 1; i++) {
+        if (
+          y <= this.itemScrollTop[i] &&
+          y > this.itemScrollTop[i + 1] &&
+          i !== this.$refs.navBar.count
+        ) {
           console.log(i);
-          this.$refs.navBar.count=i
+          this.$refs.navBar.count = i;
         }
       }
       // if(y<=this.shopY && y>this.ruleY){
@@ -185,6 +211,18 @@ export default {
       // }else if(y<=this.recommendY){
       //   this.$refs.navBar.count=3
       // }
+    },
+    showItem(index) {
+      this.addIsShow = true
+      this.add_or_buy = index
+    },
+    addShopBlur(){
+      this.addIsShow = false
+    },
+    submitShop(msg){
+      if(this.add_or_buy === 1){
+        this.$store.commit("addCar",msg)
+      }
     }
   },
 };
@@ -196,8 +234,32 @@ export default {
   z-index: 1001;
   background-color: #fff;
 }
-.scroll{
+.scroll {
   height: calc(100vh - 44px - 50px);
-  overflow:hidden;
+  overflow: hidden;
+}
+
+.addShopblur{
+  background-color: #00000070;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1000;
+}
+
+/* 过渡 */
+.addShop-enter-active,.addShop-leave-active{
+  transition: bottom 0.3s;
+}
+.addShop-enter{
+  bottom: -253px;
+}
+.addShop-enter-to{
+  bottom: 0px;
+}
+.addShop-leave-to{
+  bottom: -253px;
 }
 </style>
