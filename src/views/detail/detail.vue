@@ -221,7 +221,7 @@ export default {
     },
     submitShop(msg){
       if(this.add_or_buy === 1){
-        this.$store.commit("addCar",msg)
+        this.$store.dispatch("addCar",msg)
       }
     }
   },

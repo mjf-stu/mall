@@ -29,7 +29,9 @@ export default {
         this.$bus.$emit("imgLoad");
       }, 500);
     },
-
+    /**
+     * ===================================================测试方便只有d_id为1的数据
+     */
     toDetail(){
         this.$router.push("/detail/"+1)
     }

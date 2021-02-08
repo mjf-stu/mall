@@ -50,7 +50,9 @@ export default {
                 d_id: this.msgInfo.d_id,
                 img: this.imgInfo[0],
                 price: this.msgInfo.price,
-                quantity: this.quantity
+                quantity: this.quantity,
+                desc: this.msgInfo.desc,
+                isSelect: true
             }
             this.$emit("submitShop",msg)
         }
