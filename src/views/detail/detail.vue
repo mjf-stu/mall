@@ -34,6 +34,9 @@
         @submitShop="submitShop"
       />
     </transition>
+    <transition name="toastTips">
+    <shop-car-toast :msg="toastMsg" v-show="toastShow"/>
+    </transition>
   </div>
 </template>
 
@@ -51,6 +54,8 @@ import detailRuleMsg from "./childComps/detailRuleMsg.vue";
 import DetailCommentMsg from "./childComps/detailCommentMsg.vue";
 import DetailRecommendMsg from "./childComps/detailRecommendMsg.vue";
 import DetailToolBar from "./childComps/detailToolBar.vue";
+import DetailAddShop from "./childComps/detailAddShop.vue";
+import ShopCarToast from '../../components/common/toast/shopCarToast.vue';
 
 //混入对象
 import { backTop } from "@/common/mixin/backTop.js";
@@ -65,7 +70,6 @@ import {
   getCommentData,
   getRecommendData,
 } from "@/network/details.js";
-import DetailAddShop from "./childComps/detailAddShop.vue";
 
 export default {
   name: "Detail",
@@ -82,6 +86,7 @@ export default {
     DetailRecommendMsg,
     DetailToolBar,
     DetailAddShop,
+    ShopCarToast,
   },
   data() {
     return {
@@ -101,6 +106,8 @@ export default {
       recommendY: 0,
       add_or_buy:0,
       addIsShow: false,
+      toastMsg:"",
+      toastShow:false
       // toolBarInfo:[["/src/assets/img/detail_icon/dianpu.svg","~@/assets/img/detail_icon_pink/dianpu.svg","店铺"]
       //             ,["~@/assets/img/detail_icon/qipao.svg","~@/assets/img/detail_icon_pink/qipao.svg","客服"]
       //             ,["~@/assets/img/detail_icon/shoucang.svg","~@/assets/img/detail_icon_pink/shoucang.svg","收藏"]]
@@ -221,7 +228,15 @@ export default {
     },
     submitShop(msg){
       if(this.add_or_buy === 1){
-        this.$store.dispatch("addCar",msg)
+        this.$store.dispatch("addCar",msg).then(res=>{
+            this.toastMsg = res
+            this.toastShow = true
+            // let timer = setTimeout(() => {
+            //   this.toastShow = false
+            //   clearTimeout(timer)
+            //   timer = null
+            // }, 3000);
+        })
       }
     }
   },
@@ -261,5 +276,12 @@ export default {
 }
 .addShop-leave-to{
   bottom: -253px;
+}
+
+.toastTips-enter-active,.toastTips-leave-active{
+  transition: opacity 1s;
+}
+.toastTips-enter,.toastTips-leave-to{
+  opacity: 0;
 }
 </style>

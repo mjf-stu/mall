@@ -9,6 +9,7 @@
     ref="scroll">
     <main-msg/>
     </better-scroll>
+    <select-all/>
   </div>
 </template>
 
@@ -16,12 +17,14 @@
 import BetterScroll from '../../components/common/betterScroll/BetterScroll.vue';
 import NavBar from "../../components/common/navbar/NavBar.vue";
 import MainMsg from './childComps/mainMsg.vue';
+import SelectAll from './childComps/selectAll.vue';
 export default {
   name: "shopCar",
   components: { 
     NavBar,
     MainMsg,
     BetterScroll,
+    SelectAll,
   },
   computed:{
     count(){
@@ -43,7 +46,7 @@ export default {
   background-color: #88cbed;
 }
 .scroll{
-  height: calc(100% - 44px - 50px);
+  height: calc(100% - 44px - 50px - 30px);
   overflow: hidden;
 }
 </style>
